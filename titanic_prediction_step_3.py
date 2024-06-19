@@ -4,8 +4,8 @@ import pandas as pd
 from model_base_pipeline import model_base_pipeline
 
 
-dataset = pd.read_csv('train.csv')
-test_dataset = pd.read_csv('test.csv')
+dataset = pd.read_csv('data/train.csv')
+test_dataset = pd.read_csv('data/test.csv')
 dependent_variable = 'Survived'
 excluded_fields = ['PassengerId','Ticket', 'Name', 'Cabin']
 category_fields = ['Sex', 'Cabin', 'Embarked']
@@ -17,4 +17,4 @@ pd.DataFrame(
         'PassengerId': test_dataset.iloc[:, 0],
         'Survived': titanic_model_predict.predict_dataset(test_dataset)['y']
     }
-).to_csv('submission_3.csv', index=False)
+).to_csv('predictions/submission_3.csv', index=False)

@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
-dataset = pd.read_csv('train.csv')
+dataset = pd.read_csv('data/train.csv')
 X = dataset.iloc[:, [2,4,5,6,7,9,10,11]]
 y = dataset.iloc[:, 1:2]
 
@@ -31,7 +31,7 @@ print("Accuracy: {:.2f} %".format(accuracies.mean()*100))
 print("Standard Deviation: {:.2f} %".format(accuracies.std()*100))
 
 # need to change column indexes because of column index selector
-dataset = pd.read_csv('test.csv')
+dataset = pd.read_csv('data/test.csv')
 X = dataset.iloc[:, [1,3,4,5,6,8,9,10]]
 X_encoded = ct.transform(X.values).toarray()
 pd.DataFrame(
@@ -39,5 +39,5 @@ pd.DataFrame(
         'PassengerId': dataset.iloc[:, 0],
         'Survived': classifier.predict(X_encoded)
     }
-).to_csv('submission.csv', index=False)
+).to_csv('predictions/submission.csv', index=False)
 
