@@ -1,6 +1,5 @@
 import os
 import pandas as pd
-from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
@@ -8,32 +7,9 @@ from xgboost import XGBClassifier
 from sklearn.model_selection import cross_val_score
 from sklearn.preprocessing import LabelEncoder
 from sklearn.pipeline import Pipeline
-
 import joblib
 
-class ExcludeFields(BaseEstimator, TransformerMixin):
-    def __init__(self, fields_to_exclude):
-        self.fields_to_exclude = fields_to_exclude
-    
-    def fit(self, X, y=None):
-        return self
-    
-    def transform(self, X):
-        return X.drop(columns=self.fields_to_exclude)
-    
-# Custom transformer for debugging
-class DebugTransformer(BaseEstimator, TransformerMixin):
-    def __init__(self, message):
-        self.message = message
-    
-    def fit(self, X, y=None):
-        return self
-    
-    def transform(self, X):
-        print(f"{self.message} - Shape: {X.shape}")
-        print(X.head())  # Print the first few rows for a quick check
-        return X
-
+import custom_transformers
 
 class model_base_pipeline():
     def __init__(self, dependent_variable: str = None, excluded_fields: list[str] = [], category_fields: list[str] = []):
@@ -69,7 +45,7 @@ class model_base_pipeline():
         self.training_set['X'], self.test_set['X'], self.training_set['y'], self.test_set['y'] = train_test_split(self.dataset['X'], self.dataset['y'], test_size = ratio, random_state = 0)
 
     def add_exclusion(self):
-        self.pipeline.steps.append(('exclusion', ExcludeFields(fields_to_exclude=self.excluded_fields)))
+        self.pipeline.steps.append(('exclusion', custom_transformers.ExcludeFields(fields_to_exclude=self.excluded_fields)))
 
     def add_encoding(self):
         preprocessor = ColumnTransformer(
