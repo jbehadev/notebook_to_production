@@ -6,10 +6,15 @@ class ExcludeFields(BaseEstimator, TransformerMixin):
         self.fields_to_exclude = fields_to_exclude
     
     def fit(self, X, y=None):
+        self.feature_names_in_ = X.columns.tolist()
+        self.feature_names_out_ = [col for col in self.feature_names_in_ if col not in self.fields_to_exclude]
         return self
     
     def transform(self, X):
         return X.drop(columns=self.fields_to_exclude)
+    
+    def get_feature_names_out(self, input_features=None):
+        return self.feature_names_out_
     
 # Custom transformer for debugging
 class DebugTransformer(BaseEstimator, TransformerMixin):

@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-from model_decisiontree import model_decisiontree
+from model_histgradientboosting import model_decisiontree
 
 # Training
 dataset = pd.read_csv('data/train.csv')
